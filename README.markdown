@@ -18,4 +18,10 @@ Includes:
 Installation
 ------------
 
-Download and run install.sh.
+Run:
+
+    curl https://raw.github.com/jakajancar/aws-toolbox/master/install.sh | /bin/bash
+
+Tools will be installed to `~/opt/aws-toolbox` and config will be created in `~/.aws-toolbox`.
+
+Alternatively, download and run install.sh. You can set the `INSTALL_DIR` environment variable to install to some other place.
