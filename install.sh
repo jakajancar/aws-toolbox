@@ -131,8 +131,8 @@ then
 fi
 
 # Used by ec2 api and ami tools
-export EC2_PRIVATE_KEY=${EC2_PRIVATE_KEY:-$AWS_PRIVATE_KEY}
-export EC2_CERT=${EC2_CERT:-$AWS_CERT}
+export EC2_PRIVATE_KEY=$AWS_PRIVATE_KEY
+export EC2_CERT=$AWS_CERT
 export EC2_URL=https://$AWS_REGION.ec2.amazonaws.com
 
 # Used by cloudwatch, autoscaling, elb, rds
