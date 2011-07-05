@@ -188,14 +188,22 @@ then
     $AWS_HOME/pkgs/ec2-api-tools/bin/$CMD $@
 elif [ -e "$AWS_HOME/pkgs/ec2-ami-tools/bin/$CMD" ]
 then
-    USER_PARAM=""
-    if [ $CMD == "ec2-bundle-image" ]
-    then
-        USER_PARAM="--user $AWS_ACCOUNT_ID"
-    fi
+    # Different tools need different credentials, and they don't seem to use the env vars.
+    # They also mind if you pass some that they don't need. Hence, this complicated block.
+    case $CMD in
+        ec2-bundle-image)       PARAMS="                                                          --cert $AWS_CERT --privatekey $AWS_PRIVATE_KEY --user $AWS_ACCOUNT_ID" ;;
+        ec2-bundle-vol)         PARAMS="                                                          --cert $AWS_CERT --privatekey $AWS_PRIVATE_KEY --user $AWS_ACCOUNT_ID" ;;
+        ec2-delete-bundle)      PARAMS="--access-key $AWS_ACCESS_KEY --secret-key $AWS_SECRET_KEY                                                                      " ;;
+        ec2-download-bundle)    PARAMS="--access-key $AWS_ACCESS_KEY --secret-key $AWS_SECRET_KEY                  --privatekey $AWS_PRIVATE_KEY                       " ;;
+        ec2-migrate-bundle)     PARAMS="--access-key $AWS_ACCESS_KEY --secret-key $AWS_SECRET_KEY --cert $AWS_CERT --privatekey $AWS_PRIVATE_KEY                       " ;;
+        ec2-migrate-manifest)   PARAMS="                                                          --cert $AWS_CERT --privatekey $AWS_PRIVATE_KEY                       " ;;
+        ec2-unbundle)           PARAMS="                                                                           --privatekey $AWS_PRIVATE_KEY                       " ;;
+        ec2-upload-bundle)      PARAMS="--access-key $AWS_ACCESS_KEY --secret-key $AWS_SECRET_KEY                                                                      " ;;
+        *)                      PARAMS="" ;;
+    esac
     
     EC2_HOME=$AWS_HOME/pkgs/ec2-ami-tools \
-    $AWS_HOME/pkgs/ec2-ami-tools/bin/$CMD $USER_PARAM $@
+    $AWS_HOME/pkgs/ec2-ami-tools/bin/$CMD $PARAMS $@
 elif [ -e "$AWS_HOME/pkgs/CloudWatch/bin/$CMD" ]
 then
     AWS_CLOUDWATCH_HOME=$AWS_HOME/pkgs/CloudWatch \
