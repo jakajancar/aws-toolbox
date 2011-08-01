@@ -185,7 +185,7 @@ EOF
 elif [ -e "$AWS_HOME/pkgs/ec2-api-tools/bin/$CMD" ]
 then
     EC2_HOME=$AWS_HOME/pkgs/ec2-api-tools \
-    $AWS_HOME/pkgs/ec2-api-tools/bin/$CMD $@
+    $AWS_HOME/pkgs/ec2-api-tools/bin/$CMD "$@"
 elif [ -e "$AWS_HOME/pkgs/ec2-ami-tools/bin/$CMD" ]
 then
     # Different tools need different credentials, and they don't seem to use the env vars.
@@ -203,23 +203,23 @@ then
     esac
     
     EC2_HOME=$AWS_HOME/pkgs/ec2-ami-tools \
-    $AWS_HOME/pkgs/ec2-ami-tools/bin/$CMD $PARAMS $@
+    $AWS_HOME/pkgs/ec2-ami-tools/bin/$CMD $PARAMS "$@"
 elif [ -e "$AWS_HOME/pkgs/CloudWatch/bin/$CMD" ]
 then
     AWS_CLOUDWATCH_HOME=$AWS_HOME/pkgs/CloudWatch \
-    $AWS_HOME/pkgs/CloudWatch/bin/$CMD $@
+    $AWS_HOME/pkgs/CloudWatch/bin/$CMD "$@"
 elif [ -e "$AWS_HOME/pkgs/AutoScaling/bin/$CMD" ]
 then
     AWS_AUTO_SCALING_HOME=$AWS_HOME/pkgs/AutoScaling \
-    $AWS_HOME/pkgs/AutoScaling/bin/$CMD $@
+    $AWS_HOME/pkgs/AutoScaling/bin/$CMD "$@"
 elif [ -e "$AWS_HOME/pkgs/ElasticLoadBalancing/bin/$CMD" ]
 then
     AWS_ELB_HOME=$AWS_HOME/pkgs/ElasticLoadBalancing \
-    $AWS_HOME/pkgs/ElasticLoadBalancing/bin/$CMD $@
+    $AWS_HOME/pkgs/ElasticLoadBalancing/bin/$CMD "$@"
 elif [ -e "$AWS_HOME/pkgs/RDSCli/bin/$CMD" ]
 then
     AWS_RDS_HOME=$AWS_HOME/pkgs/RDSCli \
-    $AWS_HOME/pkgs/RDSCli/bin/$CMD $@
+    $AWS_HOME/pkgs/RDSCli/bin/$CMD "$@"
 elif [[ $CMD == 'elastic-mapreduce' ]]
 then
     # Create temporary config file
@@ -235,17 +235,17 @@ then
 }
 EOF
     
-    $AWS_HOME/pkgs/elastic-mapreduce-ruby/elastic-mapreduce -c $EMR_CONFIG $@
+    $AWS_HOME/pkgs/elastic-mapreduce-ruby/elastic-mapreduce -c $EMR_CONFIG "$@"
     
     # Remove temporary config file
     rm $EMR_CONFIG
 elif [ -e "$AWS_HOME/pkgs/elasticbeanstalk-cli/bin/$CMD" ]
 then
-    $AWS_HOME/pkgs/elasticbeanstalk-cli/bin/$CMD $@
+    $AWS_HOME/pkgs/elasticbeanstalk-cli/bin/$CMD "$@"
 elif [ -e "$AWS_HOME/pkgs/IAMCli/bin/$CMD" ]
 then
     AWS_IAM_HOME=$AWS_HOME/pkgs/IAMCli \
-    $AWS_HOME/pkgs/IAMCli/bin/$CMD $@
+    $AWS_HOME/pkgs/IAMCli/bin/$CMD "$@"
 else
     fail "unknown command: $CMD"
 fi
