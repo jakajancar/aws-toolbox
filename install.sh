@@ -140,11 +140,11 @@ export EC2_REGION=$AWS_REGION
 
 # Create AWS_CREDENTIAL_FILE (used by: cloudwatch, autoscaling, elb, rds, elastic beanstalk, iam)
 export AWS_CREDENTIAL_FILE="$HOME/.aws-toolbox/.aws-credential-file.generated"
-cat >$AWS_CREDENTIAL_FILE.new <<EOF
+cat >$AWS_CREDENTIAL_FILE.new.$$ <<EOF
 AWSAccessKeyId=$AWS_ACCESS_KEY
 AWSSecretKey=$AWS_SECRET_KEY
 EOF
-mv $AWS_CREDENTIAL_FILE.new $AWS_CREDENTIAL_FILE
+mv $AWS_CREDENTIAL_FILE.new.$$ $AWS_CREDENTIAL_FILE
 
 if [ $CMD == 'aws-toolbox' ]
 then
