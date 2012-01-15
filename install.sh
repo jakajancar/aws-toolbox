@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-set -e
+set -eu -o pipefail
 
 fail() {
     echo "$(basename $0): error: $1" >&2
@@ -106,7 +106,7 @@ read -d '' LAUNCHER <<'EOFF' || true
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-set -e
+set -eu -o pipefail
 
 CMD=$(basename $0)
 AWS_HOME="$(dirname $0)/.."
