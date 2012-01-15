@@ -119,7 +119,7 @@ fail() {
 . $HOME/.aws-toolbox/config
 
 # "Autodetect" JAVA_HOME if not set
-if [ -z "$JAVA_HOME" ]
+if [ -z "${JAVA_HOME:-}" ]
 then
     if [ $(uname) == 'Darwin' ]
     then
@@ -148,7 +148,7 @@ mv $AWS_CREDENTIAL_FILE.new.$$ $AWS_CREDENTIAL_FILE
 
 if [ $CMD == 'aws-toolbox' ]
 then
-    case $1 in
+    case ${1:-} in
         "")
             cat <<EOF
 AWS Toolbox
