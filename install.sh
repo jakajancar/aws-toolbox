@@ -51,9 +51,9 @@ $DOWNLOAD http://s3.amazonaws.com/ec2-downloads/AutoScaling-2010-08-01.zip # -||
 $DOWNLOAD http://s3.amazonaws.com/ec2-downloads/ElasticLoadBalancing.zip
 $DOWNLOAD http://s3.amazonaws.com/rds-downloads/RDSCli.zip
 $DOWNLOAD http://s3.amazonaws.com/elasticmapreduce/elastic-mapreduce-ruby.zip
-$DOWNLOAD http://s3.amazonaws.com/elasticbeanstalk-us-east-1/resources/elasticbeanstalk-cli.zip
+$DOWNLOAD http://s3.amazonaws.com/elasticbeanstalk/cli/elasticbeanstalk-cli.zip
 $DOWNLOAD http://s3.amazonaws.com/awsiammedia/public/tools/cli/latest/IAMCli.zip
-$DOWNLOAD https://s3.amazonaws.com/cloudformation-cli/AWSCloudFormation-cli.zip
+$DOWNLOAD http://s3.amazonaws.com/cloudformation-cli/AWSCloudFormation-cli.zip
 
 echo "Extracting packages..."
 UNZIP="unzip -q"
@@ -64,7 +64,7 @@ $UNZIP AutoScaling-2010-08-01.zip
 $UNZIP ElasticLoadBalancing.zip
 $UNZIP RDSCli.zip
 $UNZIP elastic-mapreduce-ruby.zip -d elastic-mapreduce-ruby # tarbomb
-$UNZIP elasticbeanstalk-cli.zip -d elasticbeanstalk-cli # tarbomb
+$UNZIP elasticbeanstalk-cli.zip elasticbeanstalk-cli/* # tarbomb, extract only tools
 $UNZIP IAMCli.zip
 $UNZIP AWSCloudFormation-cli.zip
 rm *.zip
@@ -76,6 +76,15 @@ do
     if [ $DIR != $DIR_NOVER ]
     then
         mv $DIR $DIR_NOVER
+    fi
+done
+
+# chmod 755 elasticbeanstalk since it's distributed 644
+for CMD in elasticbeanstalk-cli/bin/*
+do
+    if ! [[ $CMD =~ "service" ]] && ! [[ $CMD =~ ".cmd" ]]
+    then
+        chmod 755 $CMD
     fi
 done
 
