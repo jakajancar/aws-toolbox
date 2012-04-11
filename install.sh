@@ -53,6 +53,7 @@ $DOWNLOAD http://s3.amazonaws.com/rds-downloads/RDSCli.zip
 $DOWNLOAD http://s3.amazonaws.com/elasticmapreduce/elastic-mapreduce-ruby.zip
 $DOWNLOAD http://s3.amazonaws.com/elasticbeanstalk-us-east-1/resources/elasticbeanstalk-cli.zip
 $DOWNLOAD http://s3.amazonaws.com/awsiammedia/public/tools/cli/latest/IAMCli.zip
+$DOWNLOAD https://s3.amazonaws.com/cloudformation-cli/AWSCloudFormation-cli.zip
 
 echo "Extracting packages..."
 UNZIP="unzip -q"
@@ -65,6 +66,7 @@ $UNZIP RDSCli.zip
 $UNZIP elastic-mapreduce-ruby.zip -d elastic-mapreduce-ruby # tarbomb
 $UNZIP elasticbeanstalk-cli.zip -d elasticbeanstalk-cli # tarbomb
 $UNZIP IAMCli.zip
+$UNZIP AWSCloudFormation-cli.zip
 rm *.zip
 
 # Remove versions from directories which have them
@@ -175,6 +177,7 @@ EOF
             check "Elastic MapReduce tools"     "elastic-mapreduce --list"
             check "Elastic Beanstalk tools"     "elastic-beanstalk-describe-applications"
             check "IAM tools"                   "iam-userlistbypath"
+            check "CloudFormation tools"        "cfn-describe-stacks"
             ;;
         *)
             echo "Unknown command: '$1'" >&2
@@ -191,14 +194,15 @@ then
     # Different tools need different credentials, and they don't seem to use the env vars.
     # They also mind if you pass some that they don't need. Hence, this complicated block.
     case $CMD in
-        ec2-bundle-image)       PARAMS="                                                          --cert $AWS_CERT --privatekey $AWS_PRIVATE_KEY --user $AWS_ACCOUNT_ID" ;;
-        ec2-bundle-vol)         PARAMS="                                                          --cert $AWS_CERT --privatekey $AWS_PRIVATE_KEY --user $AWS_ACCOUNT_ID" ;;
-        ec2-delete-bundle)      PARAMS="--access-key $AWS_ACCESS_KEY --secret-key $AWS_SECRET_KEY                                                                      " ;;
-        ec2-download-bundle)    PARAMS="--access-key $AWS_ACCESS_KEY --secret-key $AWS_SECRET_KEY                  --privatekey $AWS_PRIVATE_KEY                       " ;;
-        ec2-migrate-bundle)     PARAMS="--access-key $AWS_ACCESS_KEY --secret-key $AWS_SECRET_KEY --cert $AWS_CERT --privatekey $AWS_PRIVATE_KEY                       " ;;
-        ec2-migrate-manifest)   PARAMS="                                                          --cert $AWS_CERT --privatekey $AWS_PRIVATE_KEY                       " ;;
-        ec2-unbundle)           PARAMS="                                                                           --privatekey $AWS_PRIVATE_KEY                       " ;;
-        ec2-upload-bundle)      PARAMS="--access-key $AWS_ACCESS_KEY --secret-key $AWS_SECRET_KEY                                                                      " ;;
+        ec2-bundle-image)       PARAMS="                                                             --cert $AWS_CERT --privatekey $AWS_PRIVATE_KEY --user $AWS_ACCOUNT_ID" ;;
+        ec2-bundle-vol)         PARAMS="                                                             --cert $AWS_CERT --privatekey $AWS_PRIVATE_KEY --user $AWS_ACCOUNT_ID" ;;
+        ec2-delete-bundle)      PARAMS="--access-key    $AWS_ACCESS_KEY --secret-key $AWS_SECRET_KEY                                                                      " ;;
+        ec2-download-bundle)    PARAMS="--access-key    $AWS_ACCESS_KEY --secret-key $AWS_SECRET_KEY                  --privatekey $AWS_PRIVATE_KEY                       " ;;
+        ec2-migrate-bundle)     PARAMS="--access-key    $AWS_ACCESS_KEY --secret-key $AWS_SECRET_KEY --cert $AWS_CERT --privatekey $AWS_PRIVATE_KEY                       " ;;
+        ec2-migrate-manifest)   PARAMS="                                                             --cert $AWS_CERT --privatekey $AWS_PRIVATE_KEY                       " ;;
+        ec2-unbundle)           PARAMS="                                                                              --privatekey $AWS_PRIVATE_KEY                       " ;;
+        ec2-upload-bundle)      PARAMS="--access-key    $AWS_ACCESS_KEY --secret-key $AWS_SECRET_KEY                                                                      " ;;
+        cfn-describe-stacks)    PARAMS="--access-key-id $AWS_ACCESS_KEY --secret-key $AWS_SECRET_KEY                                                                      " ;;
         *)                      PARAMS="" ;;
     esac
     
@@ -246,6 +250,10 @@ elif [ -e "$AWS_HOME/pkgs/IAMCli/bin/$CMD" ]
 then
     AWS_IAM_HOME=$AWS_HOME/pkgs/IAMCli \
     $AWS_HOME/pkgs/IAMCli/bin/$CMD "$@"
+elif [ -e "$AWS_HOME/pkgs/AWSCloudFormation/bin/$CMD" ]
+then
+    AWS_CLOUDFORMATION_HOME=$AWS_HOME/pkgs/AWSCloudFormation \
+    $AWS_HOME/pkgs/AWSCloudFormation/bin/$CMD "$@"
 else
     fail "unknown command: $CMD"
 fi
