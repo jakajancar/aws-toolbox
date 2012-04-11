@@ -14,6 +14,7 @@ Includes:
   - Elastic MapReduce tools
   - Elastic Beanstalk tools
   - IAM tools
+  - CloudFormation tools
 
 Installation
 ------------
