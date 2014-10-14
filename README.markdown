@@ -21,7 +21,7 @@ Installation
 
 Run:
 
-    curl https://raw.github.com/jakajancar/aws-toolbox/master/install.sh | /bin/bash
+    curl https://raw.githubusercontent.com/jakajancar/aws-toolbox/master/install.sh | /bin/bash
 
 Tools will be installed to `~/opt/aws-toolbox` and config will be created in `~/.aws-toolbox`.
 
