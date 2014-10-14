@@ -47,7 +47,7 @@ DOWNLOAD="curl --silent --show-error --fail --remote-name"
 $DOWNLOAD http://s3.amazonaws.com/ec2-downloads/ec2-api-tools.zip
 $DOWNLOAD http://s3.amazonaws.com/ec2-downloads/ec2-ami-tools.zip
 $DOWNLOAD http://s3.amazonaws.com/ec2-downloads/CloudWatch-2010-08-01.zip  # URL for latest not available
-$DOWNLOAD http://s3.amazonaws.com/ec2-downloads/AutoScaling-2010-08-01.zip # -||-
+$DOWNLOAD http://s3.amazonaws.com/ec2-downloads/AutoScaling-2011-01-01.zip 
 $DOWNLOAD http://s3.amazonaws.com/ec2-downloads/ElasticLoadBalancing.zip
 $DOWNLOAD http://s3.amazonaws.com/rds-downloads/RDSCli.zip
 $DOWNLOAD http://s3.amazonaws.com/elasticmapreduce/elastic-mapreduce-ruby.zip
